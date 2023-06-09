@@ -1,7 +1,4 @@
 const User = require("../models/User");
-// const { google } = require("googleapis");
-// const { OAuth2 } = google.auth;
-// const client = new OAuth2(cli)
 
 const checkUser = (userEmail) => {
   return new Promise(async (resolve, reject) => {
@@ -44,91 +41,70 @@ const showInfo = (emailUser) => {
       if (user === null || user === {} || user === undefined) {
         resolve({ text: "Not found user" });
       } else {
-        // resolve(user);
         resolve({
-          // cardsV2: [
-          //   {
-          //     cardId: "2",
-          //     card: {
-          //       header: {
-          //         title: "OOO app",
-          //         subtitle: "Helping you manage your OOO",
-          //         imageUrl: "https://goo.gle/3SfMkjb",
-          //         imageType: "SQUARE",
-          //       },
-          //       sections: [
-          //         {
-          //           widgets: [
-          //             {
-          //               decoratedText: {
-          //                 topLabel: "",
-          //                 text: "Hi! 👋 I'm here to help you with your out of office tasks.<br><br>Here's a list of commands I understand.",
-          //                 wrapText: true,
-          //               },
-          //             },
-          //           ],
-          //         },
-          //         {
-          //           widgets: [
-          //             {
-          //               decoratedText: {
-          //                 topLabel: "",
-          //                 text: "<b>/blockDayOut</b>: I will block out your calendar for you.",
-          //                 wrapText: true,
-          //               },
-          //             },
-          //             {
-          //               decoratedText: {
-          //                 topLabel: "",
-          //                 text: "<b>/cancelAllMeetings</b>: I will cancel all your meetings for the day.",
-          //                 wrapText: false,
-          //               },
-          //             },
-          //             {
-          //               decoratedText: {
-          //                 topLabel: "",
-          //                 text: "<b>/setAutoReply</b>: Set an out of office auto reply in Gmail.",
-          //                 wrapText: true,
-          //               },
-          //             },
-          //           ],
-          //         },
-          //       ],
-          //     },
-          //   },
-          // ],
-          // cardsV2: [
-          //   {
-          //     cardId: "1",
-          //     card: {
-          //       header: {
-          //         title: "OOO app",
-          //         subtitle: "Helping you manage your OOO",
-          //         imageUrl: "https://goo.gle/3SfMkjb",
-          //         imageType: "CIRCLE",
-          //       },
-          //       sections: [
-          //         {
-          //           widgets: [
-          //             {
-          //               decoratedText: {
-          //                 topLabel: "",
-          //                 text: "<b>Test icon</b>: Ok",
-          //                 // startIcon: {
-          //                 //   knownIcon: "NONE",
-          //                 //   altText: "Task done",
-          //                 //   iconUrl:
-          //                 //     "https://fonts.gstatic.com/s/i/short-term/web/system/1x/task_alt_gm_grey_48dp.png",
-          //                 // },
-          //                 wrapText: true,
-          //               },
-          //             },
-          //           ],
-          //         },
-          //       ],
-          //     },
-          //   },
-          // ],
+          cardsV2: [
+            {
+              cardId: "2",
+              card: {
+                header: {
+                  title: "Information",
+                  subtitle: "Check your inform",
+                  imageUrl: "https://goo.gle/3SfMkjb",
+                  imageType: "CIRCLE",
+                },
+                sections: [
+                  {
+                    widgets: [
+                      {
+                        decoratedText: {
+                          topLabel: "",
+                          text: `Hi! 👋 Here is information of ${user.username}`,
+                          wrapText: true,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    widgets: [
+                      {
+                        decoratedText: {
+                          topLabel: "",
+                          text: `<b>Email:</b> ${user.email}`,
+                          wrapText: true,
+                          startIcon: {
+                            knownIcon: "EMAIL",
+                          },
+                        },
+                      },
+                      {
+                        decoratedText: {
+                          topLabel: "",
+                          text: `<b>Name:</b> ${user.username}`,
+                          wrapText: false,
+                          startIcon: {
+                            knownIcon: "PERSON",
+                          },
+                        },
+                      },
+                      {
+                        decoratedText: {
+                          text: "Your avatar picture",
+                          startIcon: {
+                            knownIcon: "BOOKMARK",
+                          },
+                        },
+                      },
+                      {
+                        image: {
+                          imageUrl: user.avatar,
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
         });
       }
     } catch (error) {

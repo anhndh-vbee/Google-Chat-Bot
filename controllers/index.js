@@ -1,6 +1,8 @@
+const User = require("../models/User");
 const userService = require("../services/userService");
+const { openDialog } = require("../utils/dialog");
 
-const controller = async (req, res) => {
+const homeController = async (req, res) => {
   try {
     const userData = req.body.user;
     if (req.body.type === "MESSAGE") {
@@ -12,10 +14,12 @@ const controller = async (req, res) => {
             res.json(result1);
             break;
           case 2:
-            console.log(req.body);
             const result2 = await userService.showInfo(userData.email);
-            console.log(result2);
             res.json(result2);
+            break;
+          case 3:
+            const result3 = openDialog();
+            res.json(result3);
             break;
         }
       }
@@ -27,4 +31,13 @@ const controller = async (req, res) => {
   }
 };
 
-module.exports = { controller };
+const getAllUsers = async () => {
+  try {
+    const users = await User.find({});
+    return users;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { homeController, getAllUsers };
