@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const { getListUsers } = require("../services/listUserService");
 const userService = require("../services/userService");
 const { openDialog } = require("../utils/dialog");
 
@@ -21,6 +21,10 @@ const homeController = async (req, res) => {
             const result3 = openDialog();
             res.json(result3);
             break;
+          case 4:
+            const result4 = await getListUsers();
+            console.log(result4);
+            break;
         }
       }
     } else {
@@ -31,13 +35,4 @@ const homeController = async (req, res) => {
   }
 };
 
-const getAllUsers = async () => {
-  try {
-    const users = await User.find({});
-    return users;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-module.exports = { homeController, getAllUsers };
+module.exports = { homeController };
