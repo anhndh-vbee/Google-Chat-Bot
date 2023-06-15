@@ -1,16 +1,20 @@
-const { getListUsers } = require("../services/listUserService");
+const { showCard } = require("../services/listUserService");
+const { postNewMsg } = require("../services/messageService");
 const userService = require("../services/userService");
 const { openDialog } = require("../utils/dialog");
 
 const homeController = async (req, res) => {
   try {
+    const event = req.body;
     const userData = req.body.user;
     if (req.body.type === "MESSAGE") {
       const msg = req.body.message;
       if (msg.slashCommand) {
         switch (Number(msg.slashCommand.commandId)) {
           case 1:
+            console.log(userData);
             const result1 = await userService.addUser(userData);
+            await postNewMsg(userData);
             res.json(result1);
             break;
           case 2:
@@ -18,12 +22,12 @@ const homeController = async (req, res) => {
             res.json(result2);
             break;
           case 3:
-            const result3 = openDialog();
-            res.json(result3);
+            // console.log(req.body);
+            openDialog(event);
             break;
           case 4:
-            const result4 = await getListUsers();
-            console.log(result4);
+            await showCard(userData.email);
+            res.sendStatus(200);
             break;
         }
       }

@@ -66,4 +66,72 @@ const openDialog = (data) => {
   };
 };
 
+function openSequentialDialog(event) {
+  res.json({
+    action_response: {
+      type: "DIALOG",
+      dialog_action: {
+        dialog: {
+          body: {
+            sections: [
+              {
+                header: "Add new contact",
+                widgets: [
+                  {
+                    textInput: {
+                      label: "Notes",
+                      type: "MULTIPLE_LINE",
+                      name: "notes",
+                    },
+                  },
+                  {
+                    selectionInput: {
+                      type: "RADIO_BUTTON",
+                      label: "Contact type",
+                      name: "contactType",
+                      items: [
+                        {
+                          text: "Work",
+                          value: "Work",
+                          selected: false,
+                        },
+                        {
+                          text: "Personal",
+                          value: "Personal",
+                          selected: false,
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    buttonList: {
+                      buttons: [
+                        {
+                          text: "Submit",
+                          onClick: {
+                            action: {
+                              function: "confirmDialogSuccess",
+                              parameters: [
+                                {
+                                  key: "confirmDialogSuccess",
+                                  value: "confirmDialogSuccess",
+                                },
+                              ],
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    horizontalAlignment: "END",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+    },
+  });
+}
+
 module.exports = { openDialog };

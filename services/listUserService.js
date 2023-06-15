@@ -1,43 +1,29 @@
-const unirest = require("unirest");
-const { getJWT } = require("../middleware");
-const config = require("../config/config");
+const { postMessageToThread } = require("./messageService");
+const { google } = require("googleapis");
+const { JWT } = require("google-auth-library");
+const SCOPES = ["https://www.googleapis.com/auth/chat.bot"];
+const credentials = require("../service-account.json");
+const client = new JWT({
+  email: credentials.client_email,
+  key: credentials.private_key,
+  scopes: SCOPES,
+});
 
-function getListUsers() {
-  return new Promise(function (resolve, reject) {
-    getJWT()
-      .then(function (token) {
-        unirest
-          .get(
-            "https://chat.googleapis.com/v1/spaces/" +
-              config.SPACE_ID +
-              "/members"
-          )
-          .headers({
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          })
-          .end(function (res) {
-            // console.log(res.body.memberships[0].member);
-            if (res.error) {
-              console.error(res.error);
-              reject(res.error);
-            } else {
-              const members = res.body.memberships.map(
-                (member) => member.member.displayName
-              );
-              resolve(members);
-            }
-          });
-      })
-      .catch(function (err) {
-        reject(err);
-      });
+const chat = google.chat({ version: "v1", auth: client });
+
+const getListUsers = async () => {
+  const data = await chat.spaces.members.list({
+    parent: "spaces/AAAAIPQrz00",
   });
-}
+  const result = data.data.memberships.map((member) => {
+    return member.member.displayName;
+  });
+  return result;
+};
 
-const showCard = async () => {
+const showCard = async (emailUser) => {
   const result = await getListUsers();
-  postMessage(result);
+  await postMessageToThread(result, emailUser);
 };
 
 module.exports = { getListUsers, showCard };
